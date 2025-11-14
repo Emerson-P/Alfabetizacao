@@ -84,6 +84,17 @@ function Sidebar() {
     <SidebarContainer>
       <SidebarHeader> Menu </SidebarHeader>
       <NavList>
+
+        <NavItem>
+          <StyledLink
+            to="/login"
+            className={isActive('/login') ? 'active' : ''}
+          >
+            <IconWrapper><FaPuzzlePiece /></IconWrapper>
+            Login
+          </StyledLink>
+        </NavItem>
+
         <NavItem>
           <StyledLink
             to="/"

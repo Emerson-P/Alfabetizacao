@@ -12,7 +12,7 @@ import ForumPage from './App/ForumPage';
 import QuemSomosPage from './App/QuemSomosPage';
 import ConfigPage from './App/ConfigPage';
 import MemoriaGame from './gamepage/MemoriaGame';
-
+import LoginPage from './App/LoginPage';
 
 function App() {
   return (
@@ -26,6 +26,7 @@ function App() {
               {/* Rotas principais */}
               <Route path="/" element={<HomePage />} />
                 <Route path="/home" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/palavras" element={<PalavrasPage />} />
                 <Route path="/jogos" element={<JogosPage />} />
                 <Route path="/forum" element={<ForumPage />} />

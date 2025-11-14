@@ -16,7 +16,7 @@ Route::get('/jogos', $renderApp);
 Route::get('/forum', $renderApp);
 Route::get('/quem_somos', $renderApp);
 Route::get('/config', $renderApp);
-
+Route::get('/login', $renderApp);
 //Rotas Apis responsavel pela consulta ao banco de dados e entrega ao front por json
 
 Route::get('/api/palavras', function () {

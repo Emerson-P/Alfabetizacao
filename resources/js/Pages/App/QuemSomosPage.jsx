@@ -205,7 +205,6 @@ function QuemSomosPage() {
   const techReact = "React (Frontend)";
   const techPhp = "PHP (Backend)";
   const techMysql = "MySQL (Banco de Dados)";
-  const teamSubtitle = "Nossa Equipe e Colaboradores";
 
   return (
     <PageContainer>
@@ -296,40 +295,6 @@ function QuemSomosPage() {
            
           </TechItem>
         </TechList>
-      </Section>
-
-      <Section>
-        <Subtitle>
-          {teamSubtitle}
-          <ReadTextButton text={teamSubtitle} /> {/* ADICIONADO: Botão de leitura para o subtítulo */}
-        </Subtitle>
-        <TeamGrid>
-          <TeamMemberCard>
-            <MemberName>Gabriel Freitas</MemberName>
-            <MemberRole>Desenvolvedor Frontend</MemberRole>
-            <ReadTextButton text="Gabriel Freitas, Desenvolvedor Frontiendi" /> {/* ADICIONADO: Botão de leitura para nome e cargo */}
-          </TeamMemberCard>
-          <TeamMemberCard>
-            <MemberName>Emerson Pedrosa</MemberName>
-            <MemberRole>Desenvolvedor Backend</MemberRole>
-            <ReadTextButton text="Emerson Pedrosa, Desenvolvedor Backende" /> {/* ADICIONADO: Botão de leitura para nome e cargo */}
-          </TeamMemberCard>
-          <TeamMemberCard>
-            <MemberName>Gabriel Haziel</MemberName>
-            
-            <ReadTextButton text= "Gabriel Haziel"/> {/* ADICIONADO: Botão de leitura para nome e cargo */}
-          </TeamMemberCard>
-          <TeamMemberCard>
-            <MemberName>Artur Camargos</MemberName>
-           
-            <ReadTextButton text= "Artur Camargos"/> {/* ADICIONADO: Botão de leitura para nome e cargo */}
-          </TeamMemberCard>
-          <TeamMemberCard>
-            <MemberName>Bernardo Araujo</MemberName>
-            
-            <ReadTextButton text="Bernardo Araujo"/> {/* ADICIONADO: Botão de leitura para nome e cargo */}
-          </TeamMemberCard>
-        </TeamGrid>
       </Section>
     </PageContainer>
   );
