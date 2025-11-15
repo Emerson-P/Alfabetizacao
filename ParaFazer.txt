@@ -1,0 +1,3 @@
+Erros que precisam ser corrigidos 
+
+/login em cadastroPage

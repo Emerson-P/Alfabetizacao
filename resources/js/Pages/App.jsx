@@ -13,7 +13,7 @@ import QuemSomosPage from './App/QuemSomosPage';
 import ConfigPage from './App/ConfigPage';
 import MemoriaGame from './gamepage/MemoriaGame';
 import LoginPage from './App/LoginPage';
-
+import CadastroPage from './App/CadastroPage';
 function App() {
   return (
     <Router>
@@ -27,12 +27,13 @@ function App() {
               <Route path="/" element={<HomePage />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/cadastro" element={<CadastroPage />} />
                 <Route path="/palavras" element={<PalavrasPage />} />
                 <Route path="/jogos" element={<JogosPage />} />
                 <Route path="/forum" element={<ForumPage />} />
                 <Route path="/quem_somos" element={<QuemSomosPage />} />
                 <Route path="/config" element={<ConfigPage />} />
-    
+
                 {/* --- ADICIONE ESTAS DUAS ROTAS PARA OS JOGOS ESPECÍFICOS --- */}
                 <Route path="/jogos/memoria" element={<MemoriaGame />} />
                 <Route path="/jogos/montapalavra" element={<PalavraGame />} /> 
