@@ -1,150 +1,218 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { BookOpen } from 'lucide-react';
 
-function CadastroPage() {
-    const navigate = useNavigate();
+const CadastroAlfabetizacao = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: ''
+  });
+  
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
-    const [nome, setNome] = useState("");
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [confirmar, setConfirmar] = useState("");
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrors({});
+    setSuccessMessage('');
 
-        if (senha !== confirmar) {
-            alert("As senhas não coincidem!");
-            return;
-        }
+    // Validação básica no frontend
+    if (!formData.name || !formData.email || !formData.password || !formData.password_confirmation) {
+      setErrors({
+        general: 'Por favor, preencha todos os campos'
+      });
+      setLoading(false);
+      return;
+    }
 
-        const res = await fetch("http://localhost:8000/api/cadastro", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, email, senha }),
+    if (formData.password !== formData.password_confirmation) {
+      setErrors({
+        password_confirmation: ['As senhas não conferem']
+      });
+      setLoading(false);
+      return;
+    }
+
+    console.log('Enviando dados:', formData); // Debug
+
+    try {
+      const response = await fetch('http://localhost:8000/api/cadastro', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+      console.log('Resposta do servidor:', data); // Debug
+
+      if (response.ok) {
+        setSuccessMessage('Cadastro realizado com sucesso! Bem-vindo ao programa de alfabetização.');
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          password_confirmation: ''
         });
-
-        const data = await res.json();
-
-        if (data.success) {
-            alert("Cadastro realizado com sucesso!");
-            navigate("/login");
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000);
+      } else {
+        if (data.errors) {
+          setErrors(data.errors);
         } else {
-            alert("Erro ao cadastrar.");
+          setErrors({
+            general: data.message || 'Erro ao processar o cadastro'
+          });
         }
-    };
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error); // Debug
+      setErrors({
+        general: 'Erro ao conectar com o servidor. Verifique se o Laravel está rodando na porta 8000.'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <h1 style={styles.title}>Cadastro</h1>
-
-                <form onSubmit={handleSubmit}>
-                    <input
-                        style={styles.input}
-                        type="text"
-                        placeholder="Seu nome"
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        required
-                    />
-
-                    <input
-                        style={styles.input}
-                        type="email"
-                        placeholder="Seu e-mail"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-
-                    <input
-                        style={styles.input}
-                        type="password"
-                        placeholder="Sua senha"
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
-                        required
-                    />
-
-                    <input
-                        style={styles.input}
-                        type="password"
-                        placeholder="Confirmar senha"
-                        value={confirmar}
-                        onChange={(e) => setConfirmar(e.target.value)}
-                        required
-                    />
-
-                    <button style={styles.button} type="submit">
-                        Criar conta
-                    </button>
-                </form>
-
-                <div style={styles.linkArea}>
-                    <a style={styles.link} href="/login">
-                        Já tem conta? Faça login
-                    </a>
-                </div>
-            </div>
+  return (
+    <div className="min-h-screen bg-gray-100 p-8 flex items-center justify-center">
+      <div className="max-w-2xl w-full">
+        {/* Header com imagem ilustrativa */}
+        <div className="bg-gray-200 rounded-t-lg h-40 flex items-center justify-center mb-0">
+          <div className="text-center">
+            <BookOpen size={64} className="mx-auto text-gray-400 mb-2" />
+            <p className="text-gray-600 text-lg font-semibold">Programa de Alfabetização para Idosos</p>
+          </div>
         </div>
-    );
-}
 
-const styles = {
-    container: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        background: "#f1f1f1",
-        fontFamily: "Arial",
-    },
+        {/* Form Card */}
+        <div className="bg-white rounded-b-lg shadow-lg p-8">
+          <h2 className="text-2xl font-semibold text-amber-700 text-center mb-6">
+            Cadastro
+          </h2>
 
-    card: {
-        background: "white",
-        padding: "40px",
-        width: "420px",
-        borderRadius: "15px",
-        boxShadow: "0 0 20px rgba(0,0,0,0.1)",
-    },
+          {successMessage && (
+            <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+              {successMessage}
+            </div>
+          )}
 
-    title: {
-        textAlign: "center",
-        color: "#8b4a0e",
-        marginBottom: "30px",
-    },
+          {errors.general && (
+            <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+              {errors.general}
+            </div>
+          )}
 
-    input: {
-        width: "100%",
-        padding: "14px",
-        fontSize: "16px",
-        marginBottom: "18px",
-        borderRadius: "8px",
-        border: "1px solid #ccc",
-    },
+          <div className="space-y-6">
+            <div>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Seu nome"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 text-lg"
+              />
+              {errors.name && (
+                <p className="mt-1 text-red-600 text-sm">{errors.name[0]}</p>
+              )}
+            </div>
 
-    button: {
-        width: "100%",
-        padding: "14px",
-        background: "#8b4a0e",
-        border: "none",
-        color: "white",
-        fontSize: "18px",
-        borderRadius: "8px",
-        cursor: "pointer",
-    },
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Seu e-mail"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 text-lg"
+              />
+              {errors.email && (
+                <p className="mt-1 text-red-600 text-sm">{errors.email[0]}</p>
+              )}
+            </div>
 
-    linkArea: {
-        textAlign: "center",
-        marginTop: "16px",
-    },
+            <div>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Sua senha"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 text-lg"
+              />
+              {errors.password && (
+                <p className="mt-1 text-red-600 text-sm">{errors.password[0]}</p>
+              )}
+            </div>
 
-    link: {
-        textDecoration: "none",
-        color: "#8b4a0e",
-        fontSize: "15px",
-    },
+            <div>
+              <input
+                type="password"
+                name="password_confirmation"
+                value={formData.password_confirmation}
+                onChange={handleChange}
+                placeholder="Confirmar senha"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600 text-lg"
+              />
+              {errors.password_confirmation && (
+                <p className="mt-1 text-red-600 text-sm">{errors.password_confirmation[0]}</p>
+              )}
+            </div>
+
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="w-full bg-amber-700 hover:bg-amber-800 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+            >
+              {loading ? 'Cadastrando...' : 'Criar conta'}
+            </button>
+
+            <div className="text-center mt-4">
+              <p className="text-gray-600">
+                Já tem conta?{' '}
+                <span className="text-amber-700 hover:text-amber-800 font-semibold cursor-pointer">
+                  Faça login
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Informações adicionais */}
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-blue-800 mb-3">
+            💡 Sobre o Programa
+          </h3>
+          <p className="text-gray-700 leading-relaxed">
+            Nosso programa de alfabetização foi desenvolvido especialmente para pessoas da terceira idade, 
+            com interface amigável, letras grandes e exercícios adaptados ao ritmo de aprendizado de cada aluno.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-
-export default CadastroPage;
+export default CadastroAlfabetizacao;
