@@ -1,9 +1,11 @@
 // src/components/Sidebar/Sidebar.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaHome, FaBook, FaPuzzlePiece, FaQuestion, FaCog } from 'react-icons/fa';
 import { AiFillMessage } from 'react-icons/ai';
 import { Link, useLocation } from 'react-router-dom';
+import { User, LogOut } from 'lucide-react';
+
 
 // --- Componentes Estilizados (Styled Components) ---
 const SidebarContainer = styled.aside`
@@ -75,13 +77,75 @@ const IconWrapper = styled.span`
   justify-content: center;
 `;
 
+
 function Sidebar() {
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
 
+  const UserInfo = () => {
+  const [usuario, setUsuario] = useState(null);
+
+  // Verificar se há usuário logado ao carregar
+  useEffect(() => {
+    const usuarioLogado = localStorage.getItem('user');
+    if (usuarioLogado) {
+      setUsuario(JSON.parse(usuarioLogado));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUsuario(null);
+    window.location.reload(); // Recarrega a página
+  };
+
+  return (
+    <>
+      {/* Informações do Usuário */}
+      {usuario ? (
+        <div className="">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center">
+              <User size={20} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-gray-400">Olá,</p>
+              <p className="font-semibold text-white truncate">{usuario.name}</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-400 truncate">{usuario.email}</p>
+          
+          {/* Botão de Logout */}
+          <button
+            onClick={handleLogout}
+            className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-700 hover:bg-red-800 rounded-lg transition-colors text-sm"
+          >
+            <LogOut size={16} />
+            <span>Sair</span>
+          </button>
+        </div>
+      ) : (
+         <div className="">
+          <p className="text-sm text-gray-400 mb-3">Não conectado</p>
+          <a 
+            href="/login" 
+            className="block w-full text-center px-4 py-2 bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors text-white font-semibold text-sm"
+          >
+            Fazer Login
+          </a>
+        </div>
+      )}
+    </>
+  );
+};
+
+
   return (
     <SidebarContainer>
+
+      <UserInfo />
+
       <SidebarHeader> Menu </SidebarHeader>
       <NavList>
 
@@ -153,5 +217,4 @@ function Sidebar() {
     </SidebarContainer>
   );
 }
-
 export default Sidebar;

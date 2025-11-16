@@ -65,11 +65,11 @@ const LoginAlfabetizacao = () => {
         setSuccessMessage(`Bem-vindo, ${data.user.name}! Redirecionando...`);
         
         // Aqui você pode armazenar os dados do usuário
-        // localStorage.setItem('user', JSON.stringify(data.user)); // Se precisar
+        localStorage.setItem('user', JSON.stringify(data.user)); // Se precisar
         
         // Redirecionar após 2 segundos
         setTimeout(() => {
-          // window.location.href = '/dashboard'; // Descomente quando tiver a rota
+          window.location.href = '/'; // Descomente quando tiver a rota
           console.log('Usuário logado:', data.user);
         }, 2000);
       } else {
