@@ -1,3 +1,5 @@
 Erros que precisam ser corrigidos 
 
 /login em cadastroPage
+alterar textos em cadastro e login
+ao recarregar login a pagina não parece

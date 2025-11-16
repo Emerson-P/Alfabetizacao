@@ -27,6 +27,12 @@ const CadastroAlfabetizacao = () => {
     }
   };
 
+  const handleLoginClick = () => {
+  
+    window.location.href = '/login'; 
+    console.log('Ir para página de login');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -192,7 +198,8 @@ const CadastroAlfabetizacao = () => {
             <div className="text-center mt-4">
               <p className="text-gray-600">
                 Já tem conta?{' '}
-                <span className="text-amber-700 hover:text-amber-800 font-semibold cursor-pointer">
+                <span className="text-amber-700 hover:text-amber-800 font-semibold cursor-pointer"
+                 onClick={handleLoginClick}>
                   Faça login
                 </span>
               </p>

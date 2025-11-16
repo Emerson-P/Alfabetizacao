@@ -50,11 +50,15 @@ class RegisterController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+   public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
+        ], [
+            'email.required' => 'O e-mail é obrigatório',
+            'email.email' => 'O e-mail deve ser válido',
+            'password.required' => 'A senha é obrigatória'
         ]);
 
         if ($validator->fails()) {
@@ -69,7 +73,7 @@ class RegisterController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Credenciais inválidas'
+                'message' => 'E-mail ou senha incorretos'
             ], 401);
         }
 
