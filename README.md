@@ -11,6 +11,11 @@ php artisan migrate
 
 npm install
 
+antonio@email.com
+123456
+
+php artisan db:seed
+
 Criar duas intancias de terminal e rode 
 
 npm run dev

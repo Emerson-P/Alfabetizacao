@@ -4,3 +4,4 @@ Erros que precisam ser corrigidos
 alterar textos em cadastro e login
 ao recarregar login a pagina não parece
 Adicionar logo do aplicativo
+Refazer seeder para que os post sejam rrelacionados a apenas uma pessoa

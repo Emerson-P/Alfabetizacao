@@ -15,5 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(Palavras::class);
         $this->call(Desvisual::class);
+        $this->call([
+            UserSeeder::class,
+            PostSeeder::class,
+        ]);
     }
 }
